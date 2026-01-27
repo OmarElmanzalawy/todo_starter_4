@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_starter/screens/signin_screen.dart';
 import 'package:todo_starter/widgets/custom_textfield.dart';
@@ -110,13 +111,33 @@ class SignupScreen extends StatelessWidget {
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
-                                onPressed: (){
+                                onPressed: ()async{
               
                                   //Validate form
                                   final isValid = formKey.currentState!.validate();
 
                                   if(isValid){
-                                    // authentication logic
+                                    print("valid form");
+                                    //sign up user
+
+                                  try{
+
+                                     await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                                      email: _emailController.text,
+                                      password: _passwordController.text
+                                    );
+                                  }on FirebaseAuthException catch(e){
+                                    print(e.code);
+                                    if(e.code == "email-already-in-use"){
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(content: Text("Email already exists"))
+                                        );
+                                    }
+                                  }
+                                  catch(e){
+                                    print(e.toString());
+                                  }
+
                                   }
               
                                 },
