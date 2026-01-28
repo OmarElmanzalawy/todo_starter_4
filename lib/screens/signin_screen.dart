@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_starter/screens/home_screen.dart';
 import 'package:todo_starter/screens/signup_screen.dart';
 import 'package:todo_starter/widgets/custom_textfield.dart';
 
@@ -20,6 +22,7 @@ class SigninScreen extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
 
     return Scaffold(
+      appBar: AppBar(),
         body: SafeArea(
           child: SizedBox(
             width: double.infinity,
@@ -69,7 +72,34 @@ class SigninScreen extends StatelessWidget {
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
-                                onPressed: (){},
+                                onPressed: ()async{
+                                  try{
+
+                                    await FirebaseAuth.instance.signInWithEmailAndPassword(
+                                    email: _emailController.text,
+                                    password: _passwordController.text
+                                  );
+
+                                  // go to home screen
+
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                     MaterialPageRoute(
+                                      builder:(context) => HomeScreen(),),
+                                      (predicate) => false
+                                    );
+
+                                  }on FirebaseAuthException catch(e){
+                                    print(e.code);
+                                    if(e.code == "invalid-credential"){
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(content: Text("Wrong password"))
+                                      );
+                                    }
+                                  }
+                                  
+
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.deepPurple,
                                   foregroundColor: Colors.white,
@@ -87,14 +117,17 @@ class SigninScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text("Already have an account?"),
-                                TextButton(onPressed: (){
-                                  Navigator.push(
+                                TextButton(
+                                  onPressed: (){
+                                  //Used to reset stack when navigating
+                                  Navigator.pushAndRemoveUntil(
                                     context,
                                      MaterialPageRoute(
                                       builder:(context) {
                                         return SignupScreen();
                                       },
-                                      )
+                                      ),
+                                      (predicate) => false
                                      );
                                 }, child: Text("Sign up"))
                               ],

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_starter/screens/home_screen.dart';
 import 'package:todo_starter/screens/signin_screen.dart';
 import 'package:todo_starter/widgets/custom_textfield.dart';
 
@@ -17,6 +18,7 @@ class SignupScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     return Scaffold(
+      appBar: AppBar(),
         body: SafeArea(
           child: SizedBox(
             width: double.infinity,
@@ -126,6 +128,12 @@ class SignupScreen extends StatelessWidget {
                                       email: _emailController.text,
                                       password: _passwordController.text
                                     );
+
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(builder:(context) => HomeScreen(),),
+                                      (routes) => false
+                                      );
                                   }on FirebaseAuthException catch(e){
                                     print(e.code);
                                     if(e.code == "email-already-in-use"){
@@ -159,12 +167,16 @@ class SignupScreen extends StatelessWidget {
                               children: [
                                 Text("Already have an account?"),
                                 TextButton(onPressed: (){
-                                  Navigator.push(
+                                  
+                                  Navigator.pushAndRemoveUntil(
                                     context,
-                                    MaterialPageRoute(
-                                      builder:(context) => SigninScreen(),
-                                      )
-                                    );
+                                     MaterialPageRoute(
+                                      builder:(context) {
+                                        return SigninScreen();
+                                      },
+                                      ),
+                                      (predicate) => false
+                                     );
                                 }, child: Text("Sign in"))
                               ],
                             )
