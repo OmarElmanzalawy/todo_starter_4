@@ -21,13 +21,13 @@ class ViewModel {
       title: "First title",
       description: "description",
       isCompleted: false,
-      id: "123"
+      id: "1138571208395723"
     ),
     TaskModel(
       title: "First title",
       description: "description",
       isCompleted: false,
-      id: "123"
+      id: "12512"
     ),
   ];
 
@@ -46,6 +46,11 @@ class ViewModel {
     //Spread operator
     // tasks = [...tasks, task];
 
+  }
+
+  void deleteTask(int index){
+
+    tasks.removeAt(index);
 
   }
 

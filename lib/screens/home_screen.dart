@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     
                                   });
 
-                                  
+
                                   _titleController.clear();
                                   _descriptionController.clear();
 
@@ -131,8 +131,24 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: EdgeInsets.only(top: 20),
         itemCount: vm.tasks.length,
         itemBuilder: (context, index) {
+          final model = vm.tasks[index];
           return TaskItem(
-            model: vm.tasks[index],
+            model: model,
+            onRemove: (){
+
+                // 
+                final index = vm.tasks.indexWhere(
+                  (task) => task.id == model.id
+                );
+
+                vm.deleteTask(index);
+
+                setState(() {
+                  
+                });
+
+
+},
           );
         },
       )
