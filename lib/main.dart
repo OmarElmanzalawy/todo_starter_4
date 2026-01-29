@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_starter/screens/home_screen.dart';
 import 'package:todo_starter/screens/signup_screen.dart';
 import 'package:todo_starter/widgets/custom_textfield.dart';
 
@@ -17,7 +19,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SignupScreen()
+      home: FirebaseAuth.instance.currentUser != null ? HomeScreen() : SignupScreen()
     );
   }
 }
