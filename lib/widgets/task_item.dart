@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:todo_starter/models/task_model.dart';
 
 //showModalBottomSheet
 
 class TaskItem extends StatelessWidget {
-  const TaskItem({super.key});
+  const TaskItem({super.key, required this.model});
+
+  final TaskModel model;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
             padding: const EdgeInsets.all(12.0),
             child: ListTile(
-              title: Text("Task title",style: TextStyle(fontWeight: FontWeight.bold),),
+              title: Text(model.title,style: TextStyle(fontWeight: FontWeight.bold),),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadiusGeometry.circular(25)
               ),
@@ -26,7 +29,7 @@ class TaskItem extends StatelessWidget {
                   
                 ),
               ),
-              subtitle: Text("Task description"),
+              subtitle: model.description != null ? Text(model.description!) : null,
               trailing: IconButton(onPressed: (){}, icon: Icon(Icons.remove)),
               tileColor: Colors.white,
               
