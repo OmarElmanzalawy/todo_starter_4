@@ -1,40 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:todo_starter/main.dart';
 import 'package:todo_starter/models/task_model.dart';
 import 'package:todo_starter/widgets/custom_textfield.dart';
 import 'package:todo_starter/widgets/task_item.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
 
-  final List<TaskModel> tasks = [
-    TaskModel(
-      title: "First title",
-      description: "description",
-      isCompleted: false,
-      id: "123"
-    ),
-    TaskModel(
-      title: "Second title",
-      description: "second description",
-      isCompleted: true,
-      id: "19u4"
-    ),
-    TaskModel(
-      title: "First title",
-      description: "description",
-      isCompleted: false,
-      id: "123"
-    ),
-    TaskModel(
-      title: "First title",
-      description: "description",
-      isCompleted: false,
-      id: "123"
-    ),
-  ];
+  final String geag = "";
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+   final TextEditingController _titleController = TextEditingController();
+   final TextEditingController _descriptionController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: (){
@@ -47,8 +34,7 @@ class HomeScreen extends StatelessWidget {
             isScrollControlled: true,
             isDismissible: false,
             builder:(context) {
-              final TextEditingController _titleController = TextEditingController();
-              final TextEditingController _descriptionController = TextEditingController();
+             
               final mediaQuery = MediaQuery.of(context).viewInsets;
 
               print(mediaQuery.bottom);
@@ -74,7 +60,7 @@ class HomeScreen extends StatelessWidget {
                             const SizedBox(height: 12,),
                             CustomTextfield(
                               prefix: Icons.task_alt,
-                              hintText: "Task title",
+                              hintText: "Task description",
                               controller: _descriptionController
                             ),
                             const SizedBox(
@@ -84,6 +70,26 @@ class HomeScreen extends StatelessWidget {
                               width: double.infinity,
                               child: ElevatedButton(
                                 onPressed: (){
+
+                                  final model = TaskModel(
+                                    title: _titleController.text,
+                                    description: _descriptionController.text,
+                                    isCompleted: false,
+                                    id: UniqueKey().toString(),
+                                  );
+
+                                  //call add task function
+                                  vm.addTask(model);
+
+                                  setState(() {
+                                    
+                                  });
+
+                                  
+                                  _titleController.clear();
+                                  _descriptionController.clear();
+
+
                                   Navigator.pop(context);
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -123,10 +129,10 @@ class HomeScreen extends StatelessWidget {
       ),
       body: ListView.builder(
         padding: EdgeInsets.only(top: 20),
-        itemCount: tasks.length,
+        itemCount: vm.tasks.length,
         itemBuilder: (context, index) {
           return TaskItem(
-            model: tasks[index],
+            model: vm.tasks[index],
           );
         },
       )

@@ -3,7 +3,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_starter/screens/home_screen.dart';
 import 'package:todo_starter/screens/signup_screen.dart';
+import 'package:todo_starter/view_model/view_model.dart';
 import 'package:todo_starter/widgets/custom_textfield.dart';
+
+
+final vm = ViewModel();
 
 void main() async{
 
