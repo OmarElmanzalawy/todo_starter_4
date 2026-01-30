@@ -8,7 +8,7 @@ class ViewModel {
     TaskModel(
       title: "First title",
       description: "description",
-      isCompleted: false,
+      isCompleted: true,
       id: "123"
     ),
     TaskModel(
@@ -51,6 +51,14 @@ class ViewModel {
   void deleteTask(int index){
 
     tasks.removeAt(index);
+
+  }
+
+  void updateCompleteStatus(int index){
+
+    final taskModel = tasks[index];
+
+    taskModel.isCompleted = !taskModel.isCompleted;
 
   }
 

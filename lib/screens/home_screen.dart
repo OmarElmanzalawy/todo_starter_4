@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_starter/main.dart';
 import 'package:todo_starter/models/task_model.dart';
+import 'package:todo_starter/widgets/add_task_sheet.dart';
 import 'package:todo_starter/widgets/custom_textfield.dart';
 import 'package:todo_starter/widgets/task_item.dart';
 
@@ -24,90 +25,29 @@ class _HomeScreenState extends State<HomeScreen> {
     
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: (){
+        onPressed: ()async{
 
 
           //Show bottom sheet
 
-          showModalBottomSheet(
+          final TaskModel? model = await showModalBottomSheet(
             context: context,
             isScrollControlled: true,
             isDismissible: false,
             builder:(context) {
-             
-              final mediaQuery = MediaQuery.of(context).viewInsets;
 
-              print(mediaQuery.bottom);
-              return Padding(
-                padding: EdgeInsets.only(bottom:  mediaQuery.bottom),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 700,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 90,),
-                      Text("Add Title",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
-                      const SizedBox(height: 20,),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: Column(
-                          children: [
-                            CustomTextfield(
-                              prefix: Icons.task_alt,
-                              hintText: "Task title",
-                              controller: _titleController
-                            ),
-                            const SizedBox(height: 12,),
-                            CustomTextfield(
-                              prefix: Icons.task_alt,
-                              hintText: "Task description",
-                              controller: _descriptionController
-                            ),
-                            const SizedBox(
-                              height: 40,
-                              ),
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: (){
-
-                                  final model = TaskModel(
-                                    title: _titleController.text,
-                                    description: _descriptionController.text,
-                                    isCompleted: false,
-                                    id: UniqueKey().toString(),
-                                  );
-
-                                  //call add task function
-                                  vm.addTask(model);
-
-                                  setState(() {
-                                    
-                                  });
-
-
-                                  _titleController.clear();
-                                  _descriptionController.clear();
-
-
-                                  Navigator.pop(context);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.deepPurple,
-                                  foregroundColor: Colors.white
-                                ),
-                                 child: Text("Add task")
-                                 ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              );
+            return AddTaskSheet();
+              
             },
           );
+            if(model == null){
+              return;
+            }
+            
+          vm.addTask(model);
+          setState(() {
+            
+          });
 
         },
         child: Icon(Icons.add),

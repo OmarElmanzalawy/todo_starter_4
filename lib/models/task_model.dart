@@ -1,7 +1,7 @@
 class TaskModel {
 
   final String id;
-  final bool isCompleted;
+  bool isCompleted;
   final String title;
   final String? description;
 

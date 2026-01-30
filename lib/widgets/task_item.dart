@@ -25,16 +25,29 @@ class _TaskItemState extends State<TaskItem> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadiusGeometry.circular(25)
               ),
-              leading: Container(
-                width: 30,
-                height: 30,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 2
-                  ),
-                  shape: BoxShape.circle,
+              leading: GestureDetector(
+                onTap: () {
+                  final index = vm.tasks.indexWhere((task)=> task.id == widget.model.id);
+                  vm.updateCompleteStatus(index);
+                  setState(() {
+                    
+                  });
+                },
+                child: Container(
+                  width: 30,
+                  height: 30,
                   
+                  decoration: BoxDecoration(
+                    color: widget.model.isCompleted ? Colors.deepPurple : null,
+                    border: Border.all(
+                      color: Colors.grey,
+                      width: 2
+                    ),
+                    shape: BoxShape.circle,
+                    
+                  ),
+                  child: widget.model.isCompleted ? Icon(Icons.check,color: Colors.white,) : null
+                
                 ),
               ),
               subtitle: widget.model.description != null ? Text(widget.model.description!) : null,
