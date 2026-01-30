@@ -87,14 +87,14 @@ class _HomeScreenState extends State<HomeScreen> {
           final model = vm.tasks[index];
           return TaskItem(
             model: model,
-            onRemove: (){
+            onRemove: ()async{
 
                 // 
                 final index = vm.tasks.indexWhere(
                   (task) => task.id == model.id
                 );
 
-                vm.deleteTask(index);
+                await vm.deleteTask(index);
 
                 setState(() {
                   

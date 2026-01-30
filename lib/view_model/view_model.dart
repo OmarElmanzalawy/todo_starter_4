@@ -51,9 +51,19 @@ class ViewModel {
 
   }
 
-  void deleteTask(int index){
+  Future<void> deleteTask(int index)async{
 
+    print(tasks);
+    print(index);
+    print(tasks[index].id);
+
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    await FirebaseFirestore.instance.collection("users").doc(uid).collection("tasks").doc(tasks[index].id)
+    .delete();
     tasks.removeAt(index);
+    
+    
 
   }
 
