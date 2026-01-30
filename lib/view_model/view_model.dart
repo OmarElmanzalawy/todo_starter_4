@@ -6,35 +6,30 @@ class ViewModel {
 
   //States 
 
-  List<TaskModel> tasks = [
-    TaskModel(
-      title: "First title",
-      description: "description",
-      isCompleted: true,
-      id: "123"
-    ),
-    TaskModel(
-      title: "Second title",
-      description: "second description",
-      isCompleted: true,
-      id: "19u4"
-    ),
-    TaskModel(
-      title: "First title",
-      description: "description",
-      isCompleted: false,
-      id: "1138571208395723"
-    ),
-    TaskModel(
-      title: "First title",
-      description: "description",
-      isCompleted: false,
-      id: "12512"
-    ),
-  ];
+  List<TaskModel> tasks = [];
 
 
   //Methods
+
+  Future<void> getTasks()async{
+
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    final snapshot = await FirebaseFirestore.instance.collection("users").doc(uid).collection("tasks").get();
+
+    final models = snapshot.docs.map((doc) {
+      final map = doc.data();
+      return TaskModel(
+        title: map["title"],
+        description: map["description"],
+        isCompleted: map["isCompleted"],
+        id: map["id"]
+        );
+    }).toList();
+
+    tasks = models;
+
+  }
 
   //CRUD
 
@@ -53,9 +48,6 @@ class ViewModel {
       "id": task.id
     });
 
-    //Return new list object
-    //Spread operator
-    // tasks = [...tasks, task];
 
   }
 
@@ -72,7 +64,8 @@ class ViewModel {
     taskModel.isCompleted = !taskModel.isCompleted;
 
     final uid = FirebaseAuth.instance.currentUser!.uid;
-    await FirebaseFirestore.instance.collection("users").doc(uid).collection("tasks").doc(taskModel.id).update({
+    await FirebaseFirestore.instance.collection("users").doc(uid)
+    .collection("tasks").doc(taskModel.id).update({
       "isCompleted": taskModel.isCompleted,
     });
 

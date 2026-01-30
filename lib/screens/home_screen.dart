@@ -19,6 +19,19 @@ class _HomeScreenState extends State<HomeScreen> {
    final TextEditingController _titleController = TextEditingController();
    final TextEditingController _descriptionController = TextEditingController();
 
+   @override
+  void initState(){
+    
+    print(vm.tasks);
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
+      await vm.getTasks();
+      setState(() {
+        
+      });
+    });
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
