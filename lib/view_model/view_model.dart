@@ -65,11 +65,16 @@ class ViewModel {
 
   }
 
-  void updateCompleteStatus(int index){
+  void updateCompleteStatus(int index)async{
 
     final taskModel = tasks[index];
 
     taskModel.isCompleted = !taskModel.isCompleted;
+
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    await FirebaseFirestore.instance.collection("users").doc(uid).collection("tasks").doc(taskModel.id).update({
+      "isCompleted": taskModel.isCompleted,
+    });
 
   }
 
