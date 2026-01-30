@@ -51,6 +51,20 @@ class ViewModel {
 
   }
 
+  Future<void> deleteAllTasks()async{
+
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    final snapshot = await FirebaseFirestore.instance.collection("users").doc(uid).collection("tasks").get();
+
+    for(QueryDocumentSnapshot doc in snapshot.docs){
+      await doc.reference.delete();
+    }
+
+    tasks = [];
+
+  }
+
   Future<void> deleteTask(int index)async{
 
     print(tasks);

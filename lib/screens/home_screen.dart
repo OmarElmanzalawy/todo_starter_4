@@ -74,7 +74,34 @@ class _HomeScreenState extends State<HomeScreen> {
         foregroundColor: Colors.white,
         actions: [
           IconButton(
-            onPressed: (){},
+            onPressed: (){
+
+              showDialog(
+                context: context,
+                builder:(context) {
+                  return AlertDialog(
+                    icon: Icon(Icons.warning),
+                    title: Text("Delete All?"),
+                    content: Text("Are you sure you want to delete all tasks"),
+                    actions: [
+                      TextButton(
+                        onPressed: (){
+                          Navigator.pop(context);
+                        },
+                        child: Text("Cancel")),
+                      TextButton(onPressed: ()async{
+                        await vm.deleteAllTasks();
+                        setState(() {
+                          
+                        });
+                        Navigator.pop(context);
+                      }, child: Text("Delete",style: TextStyle(color: Colors.red),)),
+                    ],
+                  );
+                },
+              );
+
+            },
              icon: Icon(Icons.delete)
              ),
           IconButton(onPressed: (){}, icon: Icon(Icons.logout))
