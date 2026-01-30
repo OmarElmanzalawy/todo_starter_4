@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todo_starter/models/task_model.dart';
 
 class ViewModel {
@@ -36,11 +38,20 @@ class ViewModel {
 
   //CRUD
 
-  void addTask(TaskModel task){
+  void addTask(TaskModel task)async{
     
     //Modify list in place
     tasks.add(task);
     print(tasks.length);
+
+    //Add to firestore
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    await FirebaseFirestore.instance.collection("users").doc(uid).collection("tasks").doc(task.id).set({
+      "title": task.title,
+      "description": task.description,
+      "isCompleted": task.isCompleted,
+      "id": task.id
+    });
 
     //Return new list object
     //Spread operator
