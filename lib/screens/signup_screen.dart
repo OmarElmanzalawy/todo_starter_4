@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_starter/screens/home_screen.dart';
@@ -124,10 +125,18 @@ class SignupScreen extends StatelessWidget {
 
                                   try{
 
-                                     await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                                     final user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
                                       email: _emailController.text,
                                       password: _passwordController.text
                                     );
+                                  
+                                    final uid = user.user!.uid;
+                                    //Store database
+
+                                    await FirebaseFirestore.instance.collection("users").doc(uid).set({
+                                      "email": _emailController.text,
+                                      "name": _fullNameController.text
+                                    });
 
                                     Navigator.pushAndRemoveUntil(
                                       context,
